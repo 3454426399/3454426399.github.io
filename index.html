@@ -74,30 +74,77 @@
     <article id="post-My-New-Post" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
   <div class="article-meta">
     <a href="/2025/10/25/My-New-Post/" class="article-date">
-  <time class="dt-published" datetime="2025-10-25T08:38:28.000Z" itemprop="datePublished">2025-10-25</time>
+  <time class="dt-published" datetime="2025-10-25T08:38:28.241Z" itemprop="datePublished">2025-10-25</time>
 </a>
     
   </div>
   <div class="article-inner">
     
     
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/10/25/My-New-Post/">My New Post</a>
-    </h1>
-  
-
-      </header>
-    
     <div class="e-content article-entry" itemprop="articleBody">
       
-        
+        <h2 id="Linux科学上网配置步骤"><a href="#Linux科学上网配置步骤" class="headerlink" title="Linux科学上网配置步骤"></a>Linux科学上网配置步骤</h2><ol>
+<li><p>创建目录：&#x3D;&#x3D;~&#x2F;.config&#x2F;clash&#x3D;&#x3D; </p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/.config/clash</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将当前目录下的 &#x3D;&#x3D;config&#x3D;&#x3D; 子目录下的 &#x3D;&#x3D;config.yaml&#x3D;&#x3D; 和 &#x3D;&#x3D;Country.mmdb&#x3D;&#x3D; 文件复制到 &#x3D;&#x3D;~&#x2F;.config&#x2F;clash&#x3D;&#x3D; 目录下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">cp -vp ./config/config.yaml ~/.config/clash/</span><br><span class="line">cp -vp ./config/Country.mmdb ~/.config/clash/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将当前目录下的 &#x3D;&#x3D;clash_2.0.24_linux_amd64.tar.gz&#x3D;&#x3D; 解压缩后，复制到 &#x3D;&#x3D;~&#x2F;clash&#x3D;&#x3D; 目录下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">mkdir -p ~/clash</span><br><span class="line">tar -zxvf clash_2.0.24_linux_amd64.tar.gz</span><br><span class="line">cp -vp clash_2.0.24_linux_amd64 ~/clash/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>网络代理配置</p>
+<ul>
+<li><p>设置 - 网络 - 网络代理 - 手动</p>
+<p><img src="/./imgs/%E7%BD%91%E7%BB%9C%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE.png" alt="网络代理配置"></p>
+<p>终端命令行需要额外做代理配置（例如wget、curl等命令下载某些文件时），具体参考第五步骤</p>
+</li>
+</ul>
+</li>
+<li><p>终端代理配置</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">bashrc proxy</span></span><br><span class="line">export http_proxy=&quot;http://127.0.0.1:7890&quot;</span><br><span class="line">export https_proxy=&quot;http://127.0.0.1:7890&quot;</span><br><span class="line">export ftp_proxy=&quot;http://127.0.0.1:7890&quot;</span><br><span class="line">export no_proxy=&quot;localhost,127.0.0.1,localaddress,.localdomain.com&quot;</span><br></pre></td></tr></table></figure>
+
+<p>将上面的内容添加到 &#x3D;&#x3D;~&#x2F;.bashrc&#x3D;&#x3D; 文件的末尾</p>
+<p>然后，执行下面的命令，使终端代理配置生效</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将 &#x3D;&#x3D;clash&#x3D;&#x3D; 注册成守护进程</p>
+<p>将当前目录下的 &#x3D;&#x3D;config&#x3D;&#x3D; 子目录下的 &#x3D;&#x3D;clash.service&#x3D;&#x3D; 文件复制到 &#x3D;&#x3D;&#x2F;lib&#x2F;systemd&#x2F;system&#x3D;&#x3D; 目录下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo cp -vp ./config/clash.service /lib/systemd/system/</span><br></pre></td></tr></table></figure>
+
+<p>将 &#x3D;&#x3D;clash&#x3D;&#x3D; 注册成守护进程之后，不仅可以后台运行，还可以通过以下命令来启动&#x2F;终止 &#x3D;&#x3D;clash&#x3D;&#x3D; 守护进程</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">启动</span></span><br><span class="line">sudo systemctl start clash.service</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">终止</span></span><br><span class="line">sudo systemctl stop clash.service</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重启</span></span><br><span class="line">sudo systemctl restart clash.service</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看状态</span></span><br><span class="line">systemctl status clash.service</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">允许开机自启动</span></span><br><span class="line">sudo systemctl enable clash.service</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">禁止开机自启动</span></span><br><span class="line">sudo systemctl disable clash.service</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">重新加载守护进程（在更新/lib/systemd/system/xxx.service后）</span></span><br><span class="line">sudo systemctl daemon-reload</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>更新配置文件</p>
+<p>代理节点需要周期性地订阅，以保证能持续地科学上网，每次重新订阅之后，都需要更新配置文件 &#x3D;&#x3D;config.yaml&#x3D;&#x3D; 和 &#x3D;&#x3D;Country.mmdb&#x3D;&#x3D; </p>
+<p>更新配置文件的脚本，在当前目录下的 &#x3D;&#x3D;update-clash-config.sh&#x3D;&#x3D; 文件中，为方便更新配置文件，为该脚本的执行设置别名，如下</p>
+<ul>
+<li><p>先将 &#x3D;&#x3D;update-clash-config.sh&#x3D;&#x3D; 脚本复制到 &#x3D;&#x3D;~&#x2F;clash&#x2F;&#x3D;&#x3D; 目录下</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cp -vp update-clash-config.sh ~/clash/</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>将下面内容写入 &#x3D;&#x3D;~&#x2F;.bashrc&#x3D;&#x3D; 文件中</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">alias updclashcfg=&#x27;~/clash/update-clash-config.sh&#x27;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>执行下面命令，让别名生效</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">source ~/.bashrc</span><br></pre></td></tr></table></figure></li>
+</ul>
+</li>
+</ol>
+<h2 id="附件"><a href="#附件" class="headerlink" title="附件"></a>附件</h2><h3 id="clash-service"><a href="#clash-service" class="headerlink" title="clash.service"></a>clash.service</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[Unit]</span><br><span class="line">Description=clash service</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">When is this <span class="built_in">command</span> executed</span></span><br><span class="line">After=network.target</span><br><span class="line">[Service]</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">simple or forking, <span class="keyword">if</span> ExecStart is running frontend, choose simple, <span class="keyword">if</span> ExecStart is running backend, choose forking</span></span><br><span class="line">Type=simple</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash"><span class="built_in">who</span> run this <span class="built_in">command</span></span></span><br><span class="line">User=xiaozekai</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">start xxx must an absolute path</span></span><br><span class="line">ExecStart=/home/xiaozekai/clash/clash_2.0.24_linux_amd64</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">restart</span></span><br><span class="line">ExecReload=/home/xiaozekai/clash/clash_2.0.24_linux_amd64 -s reload</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">stop</span></span><br><span class="line">ExecStop=kill -s HUP $MAINPID</span><br><span class="line">PrivateTmp=true</span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+<h3 id="update-clash-config-sh"><a href="#update-clash-config-sh" class="headerlink" title="update-clash-config.sh"></a>update-clash-config.sh</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">download config.yaml from network</span></span><br><span class="line">wget -O config.yaml https://s.juzicloud.vip/link/bPUibjQIZ4KE13PG?clash=1</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">download Country.mmdb from network</span></span><br><span class="line">wget -O Country.mmdb https://cdn.jsdelivr.net/gh/Dreamacro/maxmind-geoip@release/Country.mmdb</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">backup config.yaml of clash</span></span><br><span class="line">cp -vp ~/.config/clash/config.yaml ~/.config/clash/config.yaml.backup</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">copy the lastest version of config.yaml to ~/.config/clash/</span> </span><br><span class="line">cp -vp config.yaml ~/.config/clash/config.yaml</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">backup Country.mmdb of clash</span></span><br><span class="line">cp -vp ~/.config/clash/Country.mmdb ~/.config/clash/Country.mmdb.backup</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">copy the laster version of Country.mmdb to ~/.config/clash/</span> </span><br><span class="line">cp -vp Country.mmdb ~/.config/clash/Country.mmdb</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">backup the latest version of config.yaml and Country.mmdb to ~/backup/clash/config/</span></span><br><span class="line">cp -vp config.yaml ~/backup/clash/config/config.yaml</span><br><span class="line">cp -vp Country.mmdb ~/backup/clash/config/Country.mmdb</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">remove config.yaml downloaded</span></span><br><span class="line">rm -f config.yaml</span><br><span class="line"><span class="meta prompt_"># </span><span class="language-bash">remove Country.mmdb downloaded</span></span><br><span class="line">rm -f Country.mmdb</span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_"></span></span><br><span class="line"><span class="meta prompt_">#</span><span class="language-bash"><span class="comment"># restart clash.service</span></span></span><br><span class="line">sudo systemctl restart clash.service</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="联系"><a href="#联系" class="headerlink" title="联系"></a>联系</h2><h3 id="juzicloud-email-address"><a href="#juzicloud-email-address" class="headerlink" title="juzicloud email address"></a>juzicloud email address</h3><p><a href="mailto:&#106;&#x75;&#x7a;&#x69;&#54;&#x32;&#x36;&#56;&#x38;&#64;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#111;&#x6d;">juzi62688@gmail.com</a></p>
+<h3 id="github-address-of-clash"><a href="#github-address-of-clash" class="headerlink" title="github address of clash"></a>github address of clash</h3><p><a target="_blank" rel="noopener" href="https://github.com/doreamon-design/clash/releases">https://github.com/doreamon-design/clash/releases</a></p>
+<h3 id="juzicloud-website-address"><a href="#juzicloud-website-address" class="headerlink" title="juzicloud website address"></a>juzicloud website address</h3><figure class="highlight tex"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">最新地址</span><br><span class="line">地址1：https://juzi77.xyz</span><br><span class="line">地址2：https://juzi82.xyz</span><br><span class="line">其他地址（需翻墙打开）</span><br><span class="line">地址1：https://jz5557.com</span><br><span class="line">地址2：https://jzy55999.com</span><br><span class="line">地址3：https://jzy66222.xyz</span><br><span class="line">地址4：https://juziyun886.com</span><br><span class="line">地址5：https://juziyun69.top</span><br><span class="line">地址6：https://juziyun886.top</span><br><span class="line">地址7：https://juziyun00.top</span><br><span class="line">地址8：https://juzi616.xyz</span><br><span class="line">地址9：https://juzi618.com</span><br><span class="line">地址10：https://juzi610.com</span><br><span class="line">地址11：https://juzi618.xyz</span><br><span class="line">地址12：https://juziyun889.xyz</span><br><span class="line">地址13：https://juzi619.com</span><br><span class="line">地址14：https://juziyun886.net</span><br><span class="line">地址15：https://juzi616.com</span><br><span class="line">地址16：https://juzi619.xyz</span><br><span class="line">地址17：https://juzi610.xyz</span><br><span class="line">地址18：https://juzi12.com</span><br><span class="line">地址19：https://juzi770.com</span><br><span class="line">地址20：https://juzi770.net</span><br><span class="line">地址21：https://juzi816.com</span><br><span class="line">地址22：https://juzi880.net</span><br><span class="line">地址23：https://juzi991.net</span><br><span class="line">地址24：https://juzi818.xyz</span><br><span class="line">地址25：https://juzi818.com</span><br><span class="line">地址26：https://juzi816.xyz</span><br><span class="line">地址27：https://juzi819.com</span><br></pre></td></tr></table></figure>
+
+
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/10/25/My-New-Post/" data-id="cuidp1Riq7lIjCNuEnK7rUez8" data-title="My New Post" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/10/25/My-New-Post/" data-id="cuidOwBbM9ueK2GypJK2mFk73" data-title="" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -148,7 +195,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/10/25/hello-world/" data-id="cuidELTb98P5A3C3xRNByIq8Y" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="http://example.com/2025/10/25/hello-world/" data-id="cuidsCdxO_amsOcXld5t8yd_l" data-title="Hello World" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -191,7 +238,7 @@
       <ul>
         
           <li>
-            <a href="/2025/10/25/My-New-Post/">My New Post</a>
+            <a href="/2025/10/25/My-New-Post/">(no title)</a>
           </li>
         
           <li>
