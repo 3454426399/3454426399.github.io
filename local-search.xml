@@ -4,6 +4,19 @@
   
   
   <entry>
+    <title>install virtualbox on debian12.md</title>
+    <link href="/2025/10/25/install-virtualbox-on-debian12-md/"/>
+    <url>/2025/10/25/install-virtualbox-on-debian12-md/</url>
+    
+    <content type="html"><![CDATA[<h2 id="安装virtualbox虚拟机（Debian12）"><a href="#安装virtualbox虚拟机（Debian12）" class="headerlink" title="安装virtualbox虚拟机（Debian12）"></a>安装virtualbox虚拟机（Debian12）</h2><h4 id="1-到virtualbox官网下载对应的-deb-安装包"><a href="#1-到virtualbox官网下载对应的-deb-安装包" class="headerlink" title="1. 到virtualbox官网下载对应的 deb 安装包"></a>1. 到virtualbox官网下载对应的 <strong>deb</strong> 安装包</h4><p>编写这篇文档时（2025年10月14日），Debian12最新的下载链接是：<a href="https://download.virtualbox.org/virtualbox/7.2.2/virtualbox-7.2_7.2.2-170484~Debian~bookworm_amd64.deb">https://download.virtualbox.org/virtualbox/7.2.2/virtualbox-7.2_7.2.2-170484~Debian~bookworm_amd64.deb</a></p><h4 id="2-执行-dpkg-命令安装virtualbox"><a href="#2-执行-dpkg-命令安装virtualbox" class="headerlink" title="2. 执行 dpkg 命令安装virtualbox"></a>2. 执行 <strong>dpkg</strong> 命令安装virtualbox</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo dpkg -i virtualbox-7.2_7.2.2-170484~Debian~bookworm_amd64.deb<br></code></pre></td></tr></table></figure><p>这一步骤会报错，因为系统缺少依赖包</p><h4 id="3-执行-apt-命令，下载缺少的依赖包"><a href="#3-执行-apt-命令，下载缺少的依赖包" class="headerlink" title="3. 执行 apt 命令，下载缺少的依赖包"></a>3. 执行 <strong>apt</strong> 命令，下载缺少的依赖包</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo apt update<br>sudo apt --fix-broken install<br></code></pre></td></tr></table></figure><h4 id="4-再次执行-dpkg-命令安装virtualbox"><a href="#4-再次执行-dpkg-命令安装virtualbox" class="headerlink" title="4. 再次执行 dpkg 命令安装virtualbox"></a>4. 再次执行 <strong>dpkg</strong> 命令安装virtualbox</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo dpkg -i virtualbox-7.2_7.2.2-170484~Debian~bookworm_amd64.deb<br></code></pre></td></tr></table></figure><p>这一步骤还是会报错，因为需要编译和构建virtualbox内核模块，virtualbox内核是C语言编写的，因此需要 <strong>gcc</strong> 编译器、<strong>make</strong> 自动化构建工具、<strong>perl</strong> 脚本以及当前主机操作系统内核对应的头文件集合，这些都可以通过 <strong>apt</strong> 下载</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><code class="hljs shell"><span class="hljs-meta prompt_"># </span><span class="language-bash">具体下载哪个版本的gcc和linux-headers-amd64, 执行 <span class="hljs-string">&#x27;cat /proc/version&#x27;</span>命令查看</span><br>sudo apt install gcc-12 make perl linux-headers-6.1.0-40-amd64<br></code></pre></td></tr></table></figure><p>如果当前系统上有多个版本的 <strong>gcc</strong> 编译器，需要选择正确的版本</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs shell">cd /usr/bin<br>ll gcc*<br>sudo rm -f gcc<br>sudo ln -s /ust/bin/gcc-12 /usr/bin/gcc<br></code></pre></td></tr></table></figure><h4 id="5-再次执行-dpkg-命令，成功安装virtualbox"><a href="#5-再次执行-dpkg-命令，成功安装virtualbox" class="headerlink" title="5. 再次执行 dpkg 命令，成功安装virtualbox"></a>5. 再次执行 <strong>dpkg</strong> 命令，成功安装virtualbox</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs shell">sudo dpkg -i virtualbox-7.2_7.2.2-170484~Debian~bookworm_amd64.deb<br></code></pre></td></tr></table></figure>]]></content>
+    
+    
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>My New Post</title>
     <link href="/2025/10/25/My-New-Post/"/>
     <url>/2025/10/25/My-New-Post/</url>
